@@ -2,36 +2,25 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import Link from 'next/link'
 
-
-const Login = ( )=> {
-
-    const triggerLogin = async(values)=>{
-      const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(values)
-    };
-    const res = await fetch('http://localhost:3001/login', requestOptions)
-    const data = await res.json()
-  
-    if(data.isLoggedIn){
-      localStorage.setItem('id', data.id)
-    
-      
-    }
-
-    }
+const Register = ( )=> {
+   
     return (
         <div>
-          
+    
       
         <Formik
           initialValues={{
             phoneNumber: '',
             password: '',
+            email: ''
           }}
           onSubmit={values => {
-            triggerLogin(values)
+            const requestOptions = {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(values)
+          };
+          fetch('http://localhost:3001/register', requestOptions)
       
           }}
         >
@@ -47,8 +36,12 @@ const Login = ( )=> {
                 <div>{errors.password}</div>
               ) : null}
               <br/>
+              <Field name="email"  placeholder="email"/>
+              {errors.email && touched.email ? <div>{errors.email}</div> : null}
+              <br/>
+              
               <button type="submit">Submit</button>
-             Dont have an account yet ?<Link href="/register">Sign Up</Link>
+              Already User <Link href="/login">Sign in</Link>
             </Form>
           )}
         </Formik>
@@ -57,4 +50,4 @@ const Login = ( )=> {
 }
 
 
-export default Login
+export default Register
