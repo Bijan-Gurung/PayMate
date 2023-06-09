@@ -4,8 +4,7 @@ const userSchema =  new mongoose.Schema({
   email: {type: String}, 
   password:  {type: String}, 
   phoneNumber: {type: String}, 
-  cartList: [{type: String}],
-  favList: [{type: String}]
+  status:{type:String,default:'pending'},
   });
   const User = mongoose.model('User', userSchema);
 
