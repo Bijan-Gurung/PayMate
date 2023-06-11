@@ -1,6 +1,13 @@
 const User = require('../model/user')
+const bcrypt = require('bcrypt')
+const saltRounds = 10
+const jwt = require('jsonwebtoken')
+
 
  const registerNewUser=  async (req,res)=>{
+  const hashPassword = await bcrypt.hash(req.body.password, saltRounds)
+  req.body.password = hashPassword
+      console.log(hashPassword)
     const data = await User.create(req.body)
     if(data) {
       res.json({
@@ -13,11 +20,16 @@ const User = require('../model/user')
  const loginUser=  async (req,res)=>{
  console.log(req.body)
   const data = await User.findOne({phoneNumber: req.body.phoneNumber})
+  const isMatched = await bcrypt.compare(req.body.password, data.password)
+  console.log(isMatched)
+  const token = jwt.sign({phoneNumber: req.body.phoneNumber}, process.env.SECRET_KEY)
+  console.log(token)
   if(data){
     res.json({
     isLoggedIn: true,
     msg:  "success",
-    id: data._id
+    id: data._id,
+    token: token
     })
   }else{
     res.json({
