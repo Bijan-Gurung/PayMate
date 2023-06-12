@@ -1,9 +1,11 @@
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import Link from 'next/link'
+import { useSelector } from 'react-redux';
 
 const Register = ( )=> {
-   
+   const z = useSelector(state=>state.user)
+   console.log(z)
     return (
         <div>
     

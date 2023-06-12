@@ -1,10 +1,13 @@
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import Link from 'next/link'
+import { useDispatch, useSelector } from 'react-redux';
+import { changeToken } from '@/redux/reducers/userSlice';
 
 
 const Login = ( )=> {
-
+  const {token} = useSelector(state=>state.user)
+    const dispatch = useDispatch()
     const triggerLogin = async(values)=>{
       const requestOptions = {
         method: 'POST',
@@ -13,17 +16,12 @@ const Login = ( )=> {
     };
     const res = await fetch('http://localhost:3001/login', requestOptions)
     const data = await res.json()
-  
-    if(data.isLoggedIn){
-      localStorage.setItem('id', data.id)
-    
-      
-    }
+    dispatch(changeToken(data))
 
     }
     return (
         <div>
-          
+          {token}
       
         <Formik
           initialValues={{
@@ -42,7 +40,7 @@ const Login = ( )=> {
                 <div>{errors.phoneNumber}</div>
               ) : null}
               <br/>
-              <Field name="password" placeholder="password"/>
+              <Field name="password" type="password" placeholder="password"/>
               {errors.password && touched.password? (
                 <div>{errors.password}</div>
               ) : null}

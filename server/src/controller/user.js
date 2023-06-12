@@ -22,9 +22,9 @@ const jwt = require('jsonwebtoken')
   const data = await User.findOne({phoneNumber: req.body.phoneNumber})
   const isMatched = await bcrypt.compare(req.body.password, data.password)
   console.log(isMatched)
-  console.log(token)
   if(data && isMatched){
     const token = jwt.sign({phoneNumber: req.body.phoneNumber}, process.env.SECRET_KEY)
+    console.log(token)
     res.json({
     isLoggedIn: true,
     msg:  "success",
