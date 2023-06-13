@@ -3,9 +3,13 @@ import * as Yup from 'yup';
 import Link from 'next/link'
 import { useDispatch, useSelector } from 'react-redux';
 import { changeToken } from '@/redux/reducers/userSlice';
+import { useState } from 'react';
+import { useRouter } from 'next/router'
 
 
 const Login = ( )=> {
+  const router = useRouter()
+  const [error,SetError]=useState('')
   const {token} = useSelector(state=>state.user)
     const dispatch = useDispatch()
     const triggerLogin = async(values)=>{
@@ -16,8 +20,13 @@ const Login = ( )=> {
     };
     const res = await fetch('http://localhost:3001/login', requestOptions)
     const data = await res.json()
-    dispatch(changeToken(data))
-
+    if(data.isLoggedIn){
+      dispatch(changeToken(data))
+      router.push('/users')
+    }else{
+      SetError(data.msg)
+    }
+    
     }
     return (
         <div>
@@ -45,6 +54,7 @@ const Login = ( )=> {
                 <div>{errors.password}</div>
               ) : null}
               <br/>
+              <span>{error}/</span>
               <button type="submit">Submit</button>
              Dont have an account yet ?<Link href="/register">Sign Up</Link>
             </Form>

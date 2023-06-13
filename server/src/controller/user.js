@@ -20,10 +20,12 @@ const jwt = require('jsonwebtoken')
  const loginUser=  async (req,res)=>{
  console.log(req.body)
   const data = await User.findOne({phoneNumber: req.body.phoneNumber})
-  const isMatched = await bcrypt.compare(req.body.password, data.password)
-  console.log(isMatched)
-  if(data && isMatched){
-    const token = jwt.sign({phoneNumber: req.body.phoneNumber}, process.env.SECRET_KEY)
+  
+  if(data){
+    const isMatched = await bcrypt.compare(req.body.password, data.password)
+    console.log(isMatched)
+    if(isMatched){
+      const token = jwt.sign({phoneNumber: req.body.phoneNumber}, process.env.SECRET_KEY)
     console.log(token)
     res.json({
     isLoggedIn: true,
@@ -34,11 +36,18 @@ const jwt = require('jsonwebtoken')
   }else{
     res.json({
       isLoggedIn: false,
-      msg: "user doesnnot exist"
+      msg: "invalid password "
     })
   }
+  }else{
+    res.json({
+      isLoggedIn:false,
+      msg:"user doesnot exist"
+    })
+  }
+    }
+    
 
-}
 
 
 const getAllUser =  async (req,res)=>{
