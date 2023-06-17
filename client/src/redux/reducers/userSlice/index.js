@@ -9,7 +9,10 @@ const UserSlice = createSlice({
     initialState,
     reducers: {
         changeToken:(state,action)=>{
-            state.token = action.payload.token
+            return{
+                ...state,
+                token: action.payload
+            }
         },
         resetUser:(state,action)=>{
             return {...initialState}
