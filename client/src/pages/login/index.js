@@ -54,7 +54,7 @@ const Login = ( )=> {
                 <div>{errors.password}</div>
               ) : null}
               <br/>
-              <span>{error}/</span>
+              <span>{error}</span>
               <button type="submit">Submit</button>
              Dont have an account yet ?<Link href="/register">Sign Up</Link>
             </Form>
