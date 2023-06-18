@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux'
 const Users = () => {
   const dispatch = useDispatch()
   return (
-    <div><button type="button" onClick={()=>dispatch(resetUser())}>logout</button></div>
+    <div style={{float:'right'}}><button type="button" onClick={()=>dispatch(resetUser())}>logout</button></div>
   )
 }
 
